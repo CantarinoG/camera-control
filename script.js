@@ -18,17 +18,24 @@ loader.load('./assets/jet.gltf', function (gltf) {
     console.error(error);
 });
 
-let controls = new THREE.TrackballControls(camera, renderer.domElement);
+/* let controls = new THREE.TrackballControls(camera, renderer.domElement);
 controls.rotateSpeed = 2.0;
 controls.zoomSpeed = 1.2;
 controls.panSpeed = 0.8;
-controls.staticMoving = true;
+controls.staticMoving = true; */
+
+let controls = new THREE.FlyControls(camera, renderer.domElement);
+controls.movementSpeed = 10;
+controls.domElement = renderer.domElement;
+controls.rollSpeed = 1;
+controls.autoForward = false;
+controls.dragToLook = false;
 
 camera.position.z = 10;
 
 function animate() {
     requestAnimationFrame(animate);
-    controls.update();
+    controls.update(1 / 60);
     renderer.render(scene, camera);
 }
 animate();

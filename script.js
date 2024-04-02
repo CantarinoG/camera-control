@@ -18,18 +18,8 @@ loader.load('./assets/jet.gltf', function (gltf) {
     console.error(error);
 });
 
-/* let controls = new THREE.TrackballControls(camera, renderer.domElement);
-controls.rotateSpeed = 2.0;
-controls.zoomSpeed = 1.2;
-controls.panSpeed = 0.8;
-controls.staticMoving = true; */
-
-let controls = new THREE.FlyControls(camera, renderer.domElement);
-controls.movementSpeed = 10;
-controls.domElement = renderer.domElement;
-controls.rollSpeed = 1;
-controls.autoForward = false;
-controls.dragToLook = false;
+let controls;
+addTrackballControl();
 
 camera.position.z = 10;
 
@@ -39,3 +29,40 @@ function animate() {
     renderer.render(scene, camera);
 }
 animate();
+
+/***************************************DOM Manipulation*****************************************/
+
+function addTrackballControl() {
+    controls = new THREE.TrackballControls(camera, renderer.domElement);
+    controls.rotateSpeed = 2.0;
+    controls.zoomSpeed = 1.2;
+    controls.panSpeed = 0.8;
+    controls.staticMoving = true;
+    console.log('track')
+}
+
+function addFlyControl() {
+    controls = new THREE.FlyControls(camera, renderer.domElement);
+    controls.movementSpeed = 10;
+    controls.domElement = renderer.domElement;
+    controls.rollSpeed = 1;
+    controls.autoForward = false;
+    controls.dragToLook = false;
+    console.log('fly')
+}
+
+const trackballRadio = document.getElementById('Trackball');
+const flyRadio = document.getElementById('Fly');
+
+trackballRadio.addEventListener('change', function () {
+    if (trackballRadio.checked) {
+        addTrackballControl();
+    }
+});
+
+flyRadio.addEventListener('change', function () {
+    if (flyRadio.checked) {
+        addFlyControl();
+    }
+});
+

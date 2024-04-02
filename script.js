@@ -51,8 +51,8 @@ function addFlyControl() {
     console.log('fly')
 }
 
-const trackballRadio = document.getElementById('Trackball');
-const flyRadio = document.getElementById('Fly');
+let trackballRadio = document.getElementById('Trackball');
+let flyRadio = document.getElementById('Fly');
 
 trackballRadio.addEventListener('change', function () {
     if (trackballRadio.checked) {
@@ -66,3 +66,17 @@ flyRadio.addEventListener('change', function () {
     }
 });
 
+function toggleCameraControl(event) {
+    if (event.key === 'z' || event.key === 'Z') {
+
+        if (trackballRadio.checked) {
+            flyRadio.checked = true;
+            addFlyControl();
+        } else {
+            trackballRadio.checked = true;
+            addTrackballControl();
+        }
+    }
+}
+
+document.addEventListener('keypress', toggleCameraControl);

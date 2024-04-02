@@ -1,5 +1,7 @@
 let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+let perspectiveCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+let ortographicCamera = new THREE.OrthographicCamera(window.innerWidth / -30, window.innerWidth / 30, window.innerHeight / 30, window.innerHeight / -30, 0.1, 1000);
+let camera = perspectiveCamera;
 let renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -38,7 +40,6 @@ function addTrackballControl() {
     controls.zoomSpeed = 1.2;
     controls.panSpeed = 0.8;
     controls.staticMoving = true;
-    console.log('track')
 }
 
 function addFlyControl() {
@@ -48,11 +49,12 @@ function addFlyControl() {
     controls.rollSpeed = 1;
     controls.autoForward = false;
     controls.dragToLook = false;
-    console.log('fly')
 }
 
 let trackballRadio = document.getElementById('Trackball');
 let flyRadio = document.getElementById('Fly');
+let perspectiveRadio = document.getElementById('Perspective');
+let ortographicRadio = document.getElementById('Ortographic');
 
 trackballRadio.addEventListener('change', function () {
     if (trackballRadio.checked) {
@@ -66,9 +68,21 @@ flyRadio.addEventListener('change', function () {
     }
 });
 
+perspectiveRadio.addEventListener('change', function () {
+    if (perspectiveRadio.checked) {
+        camera = perspectiveCamera;
+    }
+});
+
+ortographicRadio.addEventListener('change', function () {
+    if (ortographicRadio.checked) {
+        camera = ortographicCamera;
+    }
+});
+
+
 function toggleCameraControl(event) {
     if (event.key === 'z' || event.key === 'Z') {
-
         if (trackballRadio.checked) {
             flyRadio.checked = true;
             addFlyControl();
@@ -76,7 +90,16 @@ function toggleCameraControl(event) {
             trackballRadio.checked = true;
             addTrackballControl();
         }
+    } else if (event.key === 'x' || event.key === 'X') {
+        if (perspectiveRadio.checked) {
+            ortographicRadio.checked = true;
+            camera = ortographicCamera;
+        } else {
+            perspectiveRadio.checked = true;
+            camera = perspectiveCamera;
+        }
     }
 }
 
 document.addEventListener('keypress', toggleCameraControl);
+

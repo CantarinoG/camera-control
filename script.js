@@ -1,10 +1,13 @@
 let scene = new THREE.Scene();
-let perspectiveCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-let ortographicCamera = new THREE.OrthographicCamera(window.innerWidth / -30, window.innerWidth / 30, window.innerHeight / 30, window.innerHeight / -30, 0.1, 1000);
-let camera = perspectiveCamera;
 let renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+let camera;
+addPerspectiveCamera();
+
+let controls;
+addTrackballControl();
 
 const loader = new THREE.GLTFLoader();
 loader.load('./assets/jet.gltf', function (gltf) {
@@ -19,9 +22,6 @@ loader.load('./assets/jet.gltf', function (gltf) {
 }, undefined, function (error) {
     console.error(error);
 });
-
-let controls;
-addTrackballControl();
 
 camera.position.z = 10;
 
@@ -51,6 +51,14 @@ function addFlyControl() {
     controls.dragToLook = false;
 }
 
+function addPerspectiveCamera() {
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+}
+
+function addOrtographicCamera() {
+    camera = new THREE.OrthographicCamera(window.innerWidth / -30, window.innerWidth / 30, window.innerHeight / 30, window.innerHeight / -30, 0.1, 1000);
+}
+
 let trackballRadio = document.getElementById('Trackball');
 let flyRadio = document.getElementById('Fly');
 let perspectiveRadio = document.getElementById('Perspective');
@@ -70,16 +78,15 @@ flyRadio.addEventListener('change', function () {
 
 perspectiveRadio.addEventListener('change', function () {
     if (perspectiveRadio.checked) {
-        camera = perspectiveCamera;
+        addPerspectiveCamera();
     }
 });
 
 ortographicRadio.addEventListener('change', function () {
     if (ortographicRadio.checked) {
-        camera = ortographicCamera;
+        addOrtographicCamera()
     }
 });
-
 
 function toggleCameraControl(event) {
     if (event.key === 'z' || event.key === 'Z') {
@@ -93,10 +100,10 @@ function toggleCameraControl(event) {
     } else if (event.key === 'x' || event.key === 'X') {
         if (perspectiveRadio.checked) {
             ortographicRadio.checked = true;
-            camera = ortographicCamera;
+            addOrtographicCamera();
         } else {
             perspectiveRadio.checked = true;
-            camera = perspectiveCamera;
+            addPerspectiveCamera();
         }
     }
 }

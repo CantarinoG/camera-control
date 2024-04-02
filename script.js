@@ -4,6 +4,20 @@ let renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+const loader = new THREE.GLTFLoader();
+loader.load('./assets/jet.gltf', function (gltf) {
+    const model = gltf.scene;
+    const material = new THREE.MeshBasicMaterial({ color: 0x999999 });
+    model.traverse(function (child) {
+        if (child.isMesh) {
+            child.material = material;
+        }
+    });
+    scene.add(model);
+}, undefined, function (error) {
+    console.error(error);
+});
+
 function animate() {
     requestAnimationFrame(animate);
 

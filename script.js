@@ -18,9 +18,17 @@ loader.load('./assets/jet.gltf', function (gltf) {
     console.error(error);
 });
 
+let controls = new THREE.TrackballControls(camera, renderer.domElement);
+controls.rotateSpeed = 2.0;
+controls.zoomSpeed = 1.2;
+controls.panSpeed = 0.8;
+controls.staticMoving = true;
+
+camera.position.z = 10;
+
 function animate() {
     requestAnimationFrame(animate);
-
+    controls.update();
     renderer.render(scene, camera);
 }
 animate();
